@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lga.myblog.dao.MessageInfoMapper">
+  <resultMap id="BaseResultMap" type="com.lga.myblog.bean.MessageInfo">
+    <id column="message_id" jdbcType="INTEGER" property="messageId" />
+    <result column="message_content" jdbcType="VARCHAR" property="messageContent" />
+    <result column="message_time" jdbcType="DATE" property="messageTime" />
+    <result column="message_name" jdbcType="VARCHAR" property="messageName" />
+    <result column="message_mark" jdbcType="VARCHAR" property="messageMark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    message_id, message_content, message_time, message_name, message_mark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message_info
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message_info
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lga.myblog.bean.MessageInfo">
+    insert into message_info (message_id, message_content, message_time, 
+      message_name, message_mark)
+    values (#{messageId,jdbcType=INTEGER}, #{messageContent,jdbcType=VARCHAR}, #{messageTime,jdbcType=DATE}, 
+      #{messageName,jdbcType=VARCHAR}, #{messageMark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lga.myblog.bean.MessageInfo">
+    insert into message_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        message_id,
+      </if>
+      <if test="messageContent != null">
+        message_content,
+      </if>
+      <if test="messageTime != null">
+        message_time,
+      </if>
+      <if test="messageName != null">
+        message_name,
+      </if>
+      <if test="messageMark != null">
+        message_mark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="messageContent != null">
+        #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="messageTime != null">
+        #{messageTime,jdbcType=DATE},
+      </if>
+      <if test="messageName != null">
+        #{messageName,jdbcType=VARCHAR},
+      </if>
+      <if test="messageMark != null">
+        #{messageMark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lga.myblog.bean.MessageInfo">
+    update message_info
+    <set>
+      <if test="messageContent != null">
+        message_content = #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="messageTime != null">
+        message_time = #{messageTime,jdbcType=DATE},
+      </if>
+      <if test="messageName != null">
+        message_name = #{messageName,jdbcType=VARCHAR},
+      </if>
+      <if test="messageMark != null">
+        message_mark = #{messageMark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lga.myblog.bean.MessageInfo">
+    update message_info
+    set message_content = #{messageContent,jdbcType=VARCHAR},
+      message_time = #{messageTime,jdbcType=DATE},
+      message_name = #{messageName,jdbcType=VARCHAR},
+      message_mark = #{messageMark,jdbcType=VARCHAR}
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+</mapper>
