@@ -20,4 +20,19 @@ public interface UserInfoMapper {
     int updateByPrimaryKey(UserInfo record);
 
     List<UserInfo> findAllUser();
+
+    /**
+     * 根据分页的条件查询用户的信息
+     * @param userInfo
+     * @return
+     */
+    List<UserInfo> getUserList(UserInfo userInfo);
+
+    /**
+     * 根据分页条件查询用户的数量
+     * @param userInfo
+     * @return
+     */
+    Long getUserCount(UserInfo userInfo);
+
 }
