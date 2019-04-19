@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/back/article")
-public class BackArticleController {
+public class ArticleController {
 
     @Autowired
     private ArticleInfoMapper articleInfoMapper;

@@ -112,4 +112,49 @@
       user_mark = #{userMark,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+
+
+
+
+
+<!-- 自定义的方法 -->
+
+
+
+  <!--根据分页条件查询获取到对应的结果集-->
+  <select id="getUserList" resultMap="BaseResultMap" parameterType="userInfo">
+    select
+    <include refid="Base_Column_List" />
+    from user_info
+    where user_mark = '1'
+    <if test="userName !=null and userName !=''">
+      <bind name="userNamePattern" value="'%'+_parameter.userName+'%'"/>
+      and user_name like #{userNamePattern}
+    </if>
+    order by user_id asc
+    <if test="start != 1 and length != -1">
+      limit #{start},#{length}
+    </if>
+  </select>
+
+
+  <!--获取查询用户总记录数-->
+  <select id="getUserCount" parameterType="userInfo" resultType="long">
+    select
+    count(*)
+    from user_info
+    where user_mark = '1'
+    <if test="userName !=null and userName !=''">
+      <bind name="userNamePattern" value="'%'+_parameter.userName+'%'"/>
+      and user_name like #{userNamePattern}
+    </if>
+  </select>
+
+
+
+
+
+
+
 </mapper>

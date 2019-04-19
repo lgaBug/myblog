@@ -15,22 +15,22 @@ import java.util.List;
  * 文章管理控制器
  */
 @Controller
-@RequestMapping("/back/message")
-public class BackMessageController {
+@RequestMapping("/back/category")
+public class CategoryController {
 
 
     @GetMapping("/list")
-    public String messageListPage() {
-        return "back/message/message_list";
+    public String articleListPage() {
+        return "back/category/category";
     }
 
     @GetMapping("/update")
-    public String addMessagePage() {
-        return "back/message/message_update";
+    public String updateCategoryPage() {
+        return "back/category/category_update";
     }
 
-    @PostMapping("/add")
-    public String addMessage(ArticleInfo articleInfo, Model model) {
-        return "back/message/message_list";
+    @PostMapping("/update")
+    public String updateCategory(ArticleInfo articleInfo, Model model) {
+        return "back/category/category";
     }
 }

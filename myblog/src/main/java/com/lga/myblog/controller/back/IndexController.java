@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/back")
-public class BackIndexController {
+public class IndexController {
 
     @RequestMapping("/login")
     public String login() {

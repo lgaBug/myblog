@@ -1,6 +1,8 @@
 package com.lga.myblog.bean;
 
-public class UserInfo {
+import com.lga.myblog.utils.BaseBean;
+
+public class UserInfo  extends BaseBean {
     private Integer userId;
 
     private String userName;
