@@ -35,4 +35,17 @@ public interface UserInfoMapper {
      */
     Long getUserCount(UserInfo userInfo);
 
+    /**
+     * 删除用户，修改用户的标识为-1
+     * @param userId
+     * @return
+     */
+    int deleteUserById(Integer userId);
+
+    /**
+     * 登录查询
+     * @param userInfo
+     * @return
+     */
+    UserInfo userLogin(UserInfo userInfo);
 }
