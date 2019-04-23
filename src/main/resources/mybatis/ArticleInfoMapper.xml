@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lga.myblog.dao.ArticleInfoMapper">
+  <resultMap id="BaseResultMap" type="com.lga.myblog.bean.ArticleInfo">
+    <id column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
+    <result column="article_content" jdbcType="VARCHAR" property="articleContent" />
+    <result column="article_img" jdbcType="VARCHAR" property="articleImg" />
+    <result column="article_recom" jdbcType="VARCHAR" property="articleRecom" />
+    <result column="article_time" jdbcType="DATE" property="articleTime" />
+    <result column="article_mark" jdbcType="VARCHAR" property="articleMark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    article_id, category_id, user_id, article_title, article_content, article_img, article_recom, 
+    article_time, article_mark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from article_info
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </select>
+
+  <!--查询所有的文章-->
+  <select id="findAllArticle" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article_info
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article_info
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lga.myblog.bean.ArticleInfo">
+    insert into article_info (article_id, category_id, user_id, 
+      article_title, article_content, article_img, 
+      article_recom, article_time, article_mark
+      )
+    values (#{articleId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{articleTitle,jdbcType=VARCHAR}, #{articleContent,jdbcType=VARCHAR}, #{articleImg,jdbcType=VARCHAR}, 
+      #{articleRecom,jdbcType=VARCHAR}, #{articleTime,jdbcType=DATE}, #{articleMark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lga.myblog.bean.ArticleInfo">
+    insert into article_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        article_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="articleTitle != null">
+        article_title,
+      </if>
+      <if test="articleContent != null">
+        article_content,
+      </if>
+      <if test="articleImg != null">
+        article_img,
+      </if>
+      <if test="articleRecom != null">
+        article_recom,
+      </if>
+      <if test="articleTime != null">
+        article_time,
+      </if>
+      <if test="articleMark != null">
+        article_mark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        #{articleId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTitle != null">
+        #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContent != null">
+        #{articleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="articleImg != null">
+        #{articleImg,jdbcType=VARCHAR},
+      </if>
+      <if test="articleRecom != null">
+        #{articleRecom,jdbcType=VARCHAR},
+      </if>
+      <if test="articleTime != null">
+        #{articleTime,jdbcType=DATE},
+      </if>
+      <if test="articleMark != null">
+        #{articleMark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lga.myblog.bean.ArticleInfo">
+    update article_info
+    <set>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTitle != null">
+        article_title = #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContent != null">
+        article_content = #{articleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="articleImg != null">
+        article_img = #{articleImg,jdbcType=VARCHAR},
+      </if>
+      <if test="articleRecom != null">
+        article_recom = #{articleRecom,jdbcType=VARCHAR},
+      </if>
+      <if test="articleTime != null">
+        article_time = #{articleTime,jdbcType=DATE},
+      </if>
+      <if test="articleMark != null">
+        article_mark = #{articleMark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lga.myblog.bean.ArticleInfo">
+    update article_info
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_content = #{articleContent,jdbcType=VARCHAR},
+      article_img = #{articleImg,jdbcType=VARCHAR},
+      article_recom = #{articleRecom,jdbcType=VARCHAR},
+      article_time = #{articleTime,jdbcType=DATE},
+      article_mark = #{articleMark,jdbcType=VARCHAR}
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+<!--自定义的操作-->
+
+  <!--删除文章-->
+  <delete id="deleteArticleByCategoryId" parameterType="int">
+    delete from article_info  where category_id = #{categoryId}
+  </delete>
+
+  <select id="getArticle" parameterType="articleInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article_info
+    where article_mark = '1'
+    <if test="articleTitle != null">
+      <bind name="articleTitleParam" value="'%'+_parameter.articleTitle+'%'"/>
+      and article_title like #{articleTitleParam}
+    </if>
+    <if test="articleId != null">
+      and article_id = #{articleId}
+    </if>
+    <if test="categoryId != null">
+      and category_id = #{categoryId}
+    </if>
+    <if test="userId != null">
+      and user_id = #{userId}
+    </if>
+    <if test="articleRecom != null">
+      and article_recom = #{articleRecom}
+    </if>
+
+  </select>
+
+
+</mapper>
