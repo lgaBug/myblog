@@ -12,10 +12,11 @@
 <link rel="apple-touch-icon-precomposed" href="/admin/images/icon/icon.png">
 <link rel="shortcut icon" href="/admin/images/icon/favicon.ico">
 <script src="/admin/js/jquery-2.1.4.min.js"></script>
+<script src="/layer/layer.js"></script>
 </head>
 <body class="user-select" style="margin: 0px;padding: 0px;">
 
-      <form action="/back/article/list" method="post" class="form-inline" >
+      <form action="/back/article/list?page=1" method="post" class="form-inline" >
       	<div>
       		<ul class="breadcrumb" style="margin: 0px;">
       			<li>文章管理</li>
@@ -24,7 +25,23 @@
       	</div>
    		<div class="row alert alert-info">
    				<div class="form-group">
-   					<input type="text" name="" class="form-control" placeholder="请输入文章的标题"/>
+   					<input type="text" name="articleTitle" class="form-control" value="${(article.articleTitle)!}" placeholder="请输入文章的标题"/>
+                    <select name="categoryId" class="form-control">
+                        <option value="">请选择</option>
+                        <#list (allCategory)! as category>
+                            <option value="${(category.categoryId)!}"
+                            <#if  article.categoryId??>
+                                    <#if  category.categoryId ==article.categoryId>
+                                    selected
+                                </#if>
+                              </#if>
+                        >
+                             ${(category.categoryName)!}
+                            </option>
+                        </#list>
+                    </select>
+
+
    					<input type="submit" value="查询" class="btn btn-info "/>
    					<a href="/back/article/add" class="btn btn-info ">增加文章</a>
    				
@@ -44,44 +61,57 @@
               </tr>
             </thead>
             <tbody>
-            <#list (articles) as article>
+            <#list (pageBean.list) as article>
               <tr>
                 <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
                 <td class="article-title">${(article.articleTitle)!}</td>
-                <td>${(article.categoryId)!}</td>
+                <td>${(article.categoryName)!}</td>
                 <td>
                     <#if article.articleTime??>
-                    ${(article.articleTime)?string("yyyy年MM月dd日")}
+                    ${(article.articleTime)?string("yyyy年MM月dd日 HH:mm:ss")}
                     <#else>
                     </#if>
                 </td>
-                <td><a href="article_update.html">修改</a> <a rel="6">删除</a></td>
+                <td><a href="/back/article/update?articleId=${(article.articleId)!} ">修改</a> <a rel="6" href="javascript:void(0)" onclick="deleteArticle(${(article.articleId)!})">删除</a></td>
               </tr>
             </#list>
             </tbody>
           </table>
-        </div>
-        <footer class="message_footer">
-          <nav>
-            <div class="btn-toolbar operation" role="toolbar">
-              <div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete">删除</button>
-              </div>
-            </div>
-            <ul class="pagination pagenav">
-              <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+            共有${pageBean.allRow}条记录，当前是第${pageBean.currentPage}/${pageBean.totalPage}页
+            <nav >
+                <ul class="pager">
+                    <#if pageBean.currentPage == 1>
+                    第一页 上一页
+                    <#else>
+                    <li><a href="/back/article/list?page=1&articleTitle=${(article.articleTitle)!}&categoryId=${(article.categoryId)!}">第一页</a></li>
+                    <li><a href="/back/article/list?page=${pageBean.currentPage-1}&articleTitle=${(article.articleTitle)!}&categoryId=${(article.categoryId)!}">上一页</a></li>
+                </#if>
+                <#if pageBean.currentPage == pageBean.totalPage>
+                下一页 最末页
+                <#else>
+                <li><a href="/back/article/list?page=${pageBean.currentPage+1}&articleTitle=${(article.articleTitle)!}&categoryId=${(article.categoryId)!}">下一页</a></li>
+                <li><a href="/back/article/list?page=${pageBean.totalPage}&articleTitle=${(article.articleTitle)!}&categoryId=${(article.categoryId)!}">最末页</a></li>
+            </#if>
             </ul>
-          </nav>
-        </footer>
+        </div>
+
       </form>
 <script src="/admin/js/bootstrap.min.js"></script> 
-<script src="/admin/js/admin-scripts.js"></script> 
+<script src="/admin/js/admin-scripts.js"></script>
+<script type="text/javascript">
+
+    function deleteArticle(articleId) {
+        layer.confirm('是否删除该文章？',
+            {
+                btn:['是','否'],//按钮
+                icon:2   //图标
+            },
+            function () {
+                location.href = "/back/article/delete?articleId=" + articleId;
+            }
+        )
+
+    }
+</script>
 </body>
 </html>

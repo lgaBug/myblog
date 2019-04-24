@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="/admin/images/icon/favicon.ico">
     <script src="/admin/js/jquery-2.1.4.min.js"></script>
     <script src="/ckeditor/ckeditor.js"></script>
+    <script src="/admin/js/jquery.form.js"></script>
 </head>
 
 <body class="user-select" style="margin: 0px;padding: 0px;">
@@ -24,7 +25,7 @@
 </div>
 <br/>
 <div class="row">
-    <form action="/back/article/add" method="post" class="add-article-form">
+    <form id="f1" action="/back/article/add" method="post" class="add-article-form">
         <div style="color: red" align="center">${(info)!}</div>
         <div class="col-md-9">
 
@@ -48,7 +49,7 @@
                     <ul class="category-list">
                         <li>
                             <label>
-                                <input name="categoryId" type="radio" value="${(category.categoryId)!}">
+                                <input name="categoryId" type="radio" value="${(category.categoryId)!}" checked>
                                 ${(category.categoryName)!} <em class="hidden-md">( 栏目ID: <span>${(category.categoryId)!}</span>
                                 )</em></label>
                         </li>
@@ -60,8 +61,10 @@
         <div class="add-article-box">
             <h2 class="add-article-box-title"><span>标题图片</span></h2>
             <div class="add-article-box-content">
-                <input type="file" class="form-control" placeholder="点击按钮选择图片" id="pictureUpload" name="articleImg"
-                       autocomplete="off">
+                <input type="file" class="form-control" placeholder="点击按钮选择图片" id="upload" name="upload"
+                       autocomplete="off" onchange="uploadImg()">
+                <img src="" width="338" id="fileImg">
+                <input type="hidden" name="articleImg" id="articleImg">
             </div>
 
         </div>
@@ -78,7 +81,7 @@
                 </p>
             </div>
             <div class="add-article-box-footer">
-                <button class="btn btn-primary" type="submit" name="submit">发布</button>
+                <button class="btn btn-primary" type="submit" name="">发布</button>
             </div>
         </div>
 </div>
@@ -87,5 +90,20 @@
 
 <script src="/admin/js/bootstrap.min.js"></script>
 <script src="/admin/js/admin-scripts.js"></script>
+<script type="text/javascript">
+    function uploadImg() {
+        var options = {
+            url: '/back/article/upload',
+            type: 'post',
+            success: function (data) {
+                $("#fileImg").attr("src", data);
+                $("#articleImg").val(data);
+            }
+        }
+        $("#f1").ajaxSubmit(options);
+
+    }
+
+</script>
 </body>
 </html>

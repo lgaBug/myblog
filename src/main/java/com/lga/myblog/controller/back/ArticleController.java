@@ -5,14 +5,18 @@ import com.lga.myblog.bean.CategoryInfo;
 import com.lga.myblog.bean.UserInfo;
 import com.lga.myblog.service.ArticleInfoService;
 import com.lga.myblog.service.CategoryInfoService;
+import com.lga.myblog.utils.Const;
+import com.lga.myblog.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +34,15 @@ public class ArticleController {
     private CategoryInfoService categoryInfoService;
 
     @RequestMapping("/list")
-    public String articleListPage(ArticleInfo articleInfo ,Model model) {
+    public String articleListPage(ArticleInfo articleInfo ,Model model,Integer page) {
 
-        List<ArticleInfo> articles = articleInfoService.getArticle(articleInfo);
-        model.addAttribute("articles", articles);
+        model.addAttribute("article", articleInfo);
+        PageBean<ArticleInfo> pageBean = articleInfoService.getArticle(articleInfo == null ?new ArticleInfo():articleInfo, page);
+        model.addAttribute("pageBean", pageBean);
+
+        //查询出所有的栏目信息
+        List<CategoryInfo> allCategory = categoryInfoService.getAllCategory();
+        model.addAttribute("allCategory", allCategory);
         return "back/article/article_list";
     }
 
@@ -59,6 +68,73 @@ public class ArticleController {
         boolean flag = articleInfoService.saveArticle(articleInfo);
         model.addAttribute("info", flag ? "添加文章成功" : "添加文章失败");
 
+        //查询出所有的栏目信息
+        List<CategoryInfo> allCategory = categoryInfoService.getAllCategory();
+        model.addAttribute("allCategory", allCategory);
+
         return "back/article/article_add";
     }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public String upload(@RequestParam MultipartFile upload) {
+        String url = articleInfoService.doPutFile(upload);
+
+        return url;
+
+    }
+
+    /**
+     * 在线文本编辑器上传的图片和文件
+     * @param upload
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/uploadfile")
+    @ResponseBody
+    public void uploadFile(@RequestParam MultipartFile upload , HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String url = articleInfoService.doPutFile(upload);
+            PrintWriter out = response.getWriter();
+            String callBack = request.getParameter("CKEditorFuncNum");
+            out.println("<script>window.parent.CKEDITOR.tools.callFunction(" + callBack + ",'"+url+"')</script>");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("/delete")
+    public String deleteArticle(Integer articleId, Model model) {
+
+        boolean flag = articleInfoService.deleteArticleById(articleId);
+        model.addAttribute("info", flag ? "删除文章成功" : "删除文章失败");
+        return "/back/article/article_info";
+    }
+
+    @GetMapping("/update")
+    public String updateArticlePage(Integer articleId, Model model) {
+
+        ArticleInfo articleInfo = articleInfoService.getArticleById(articleId);
+        model.addAttribute("articleInfo", articleInfo);
+
+        //查询出所有的栏目信息
+        List<CategoryInfo> allCategory = categoryInfoService.getAllCategory();
+        model.addAttribute("allCategory", allCategory);
+        return "/back/article/article_update";
+    }
+
+    @PostMapping("/update")
+    public String updateArticle(ArticleInfo articleInfo,Model model) {
+
+        boolean flag = articleInfoService.updateArticle(articleInfo);
+        model.addAttribute("info", flag ? "更新文章成功" : "更新文章失败");
+
+
+
+
+        return "/back/article/article_update";
+    }
+
 }

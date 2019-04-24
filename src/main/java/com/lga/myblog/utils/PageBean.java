@@ -1,5 +1,7 @@
 package com.lga.myblog.utils;
 
+import com.lga.myblog.bean.ArticleInfo;
+
 import java.io.Serializable;
 import java.util.List;
 

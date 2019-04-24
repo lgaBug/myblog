@@ -29,4 +29,6 @@ public interface ArticleInfoMapper {
      * @return
      */
     List<ArticleInfo> getArticle(ArticleInfo articleInfo);
+
+    Long getArticleCount(ArticleInfo articleInfo);
 }

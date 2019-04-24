@@ -18,4 +18,7 @@ public class Const {
     //用户标识无效
     public static final String MARK_NO = "-1";
 
+    //图片上传存放的地址
+    public static final String FILE_URL = "http://localhost:8081/myblog_file/upload/";
+
 }

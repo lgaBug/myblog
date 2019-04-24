@@ -1,6 +1,8 @@
 package com.lga.myblog.service;
 
 import com.lga.myblog.bean.ArticleInfo;
+import com.lga.myblog.utils.PageBean;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface ArticleInfoService {
      * @param articleInfo
      * @return
      */
-    List<ArticleInfo> getArticle(ArticleInfo articleInfo);
+    PageBean<ArticleInfo> getArticle(ArticleInfo articleInfo,Integer page);
 
     /**
      * 新增文章
@@ -26,4 +28,22 @@ public interface ArticleInfoService {
      * @return
      */
     boolean saveArticle(ArticleInfo articleInfo);
+
+    /**
+     * 文件上传
+     * @param file
+     * @return
+     */
+    String doPutFile(MultipartFile file);
+
+    /**
+     * 通过articleId删除文章(将articleMark设置为'-1')
+     * @param articleId
+     * @return
+     */
+    boolean deleteArticleById(Integer articleId);
+
+    ArticleInfo getArticleById(Integer articleId);
+
+    boolean updateArticle(ArticleInfo articleInfo);
 }

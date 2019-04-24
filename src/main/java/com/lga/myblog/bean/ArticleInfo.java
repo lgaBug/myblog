@@ -1,8 +1,10 @@
 package com.lga.myblog.bean;
 
+import com.lga.myblog.utils.BaseBean;
+
 import java.util.Date;
 
-public class ArticleInfo {
+public class ArticleInfo extends BaseBean {
     private Integer articleId;
 
     private Integer categoryId;
@@ -20,6 +22,16 @@ public class ArticleInfo {
     private Date articleTime;
 
     private String articleMark;
+
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public Integer getArticleId() {
         return articleId;
