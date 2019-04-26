@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.lga.myblog.bean.MessageInfo">
     <id column="message_id" jdbcType="INTEGER" property="messageId" />
     <result column="message_content" jdbcType="VARCHAR" property="messageContent" />
-    <result column="message_time" jdbcType="DATE" property="messageTime" />
+    <result column="message_time" jdbcType="TIMESTAMP" property="messageTime" />
     <result column="message_name" jdbcType="VARCHAR" property="messageName" />
     <result column="message_mark" jdbcType="VARCHAR" property="messageMark" />
   </resultMap>
@@ -24,7 +24,7 @@
   <insert id="insert" parameterType="com.lga.myblog.bean.MessageInfo">
     insert into message_info (message_id, message_content, message_time, 
       message_name, message_mark)
-    values (#{messageId,jdbcType=INTEGER}, #{messageContent,jdbcType=VARCHAR}, #{messageTime,jdbcType=DATE}, 
+    values (#{messageId,jdbcType=INTEGER}, #{messageContent,jdbcType=VARCHAR}, #{messageTime,jdbcType=TIMESTAMP},
       #{messageName,jdbcType=VARCHAR}, #{messageMark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lga.myblog.bean.MessageInfo">
@@ -90,4 +90,45 @@
       message_mark = #{messageMark,jdbcType=VARCHAR}
     where message_id = #{messageId,jdbcType=INTEGER}
   </update>
+
+
+
+
+
+
+
+
+
+  <!--自定义接口-->
+
+  <!--查询留言信息-->
+  <select id="getMessage" resultMap="BaseResultMap" parameterType="messageInfo">
+    select
+    <include refid="Base_Column_List" />
+    from message_info
+    where 1=1
+    <if test="messageId != null">
+    and  message_id = #{messageId}
+    </if>
+    <if test="messageContent != null">
+      and  message_content = #{messageContent}
+    </if>
+    <if test="messageTime != null and messageTime != '' ">
+      and  message_time = #{messageTime}
+    </if>
+    <if test="messageName != null">
+      <bind name="messageNameParameter" value="'%'+_parameter.messageName+'%'" />
+      and   message_name  like #{messageNameParameter}
+    </if>
+    <if test="messageMark != null">
+      and  message_mark =#{messageMark}
+    </if>
+
+
+  </select>
+
+
+
+
+
 </mapper>

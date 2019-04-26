@@ -9,7 +9,7 @@
     <result column="article_content" jdbcType="VARCHAR" property="articleContent" />
     <result column="article_img" jdbcType="VARCHAR" property="articleImg" />
     <result column="article_recom" jdbcType="VARCHAR" property="articleRecom" />
-    <result column="article_time" jdbcType="DATE" property="articleTime" />
+    <result column="article_time" jdbcType="TIMESTAMP" property="articleTime" />
     <result column="article_mark" jdbcType="VARCHAR" property="articleMark" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName"></result>
   </resultMap>
@@ -42,7 +42,7 @@
       )
     values (#{articleId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{articleTitle,jdbcType=VARCHAR}, #{articleContent,jdbcType=VARCHAR}, #{articleImg,jdbcType=VARCHAR}, 
-      #{articleRecom,jdbcType=VARCHAR}, #{articleTime,jdbcType=DATE}, #{articleMark,jdbcType=VARCHAR}
+      #{articleRecom,jdbcType=VARCHAR}, #{articleTime,jdbcType=TIMESTAMP}, #{articleMark,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.lga.myblog.bean.ArticleInfo">
@@ -99,7 +99,7 @@
         #{articleRecom,jdbcType=VARCHAR},
       </if>
       <if test="articleTime != null">
-        #{articleTime,jdbcType=DATE},
+        #{articleTime,jdbcType=TIMESTAMP},
       </if>
       <if test="articleMark != null">
         #{articleMark,jdbcType=VARCHAR},
@@ -128,7 +128,7 @@
         article_recom = #{articleRecom,jdbcType=VARCHAR},
       </if>
       <if test="articleTime != null">
-        article_time = #{articleTime,jdbcType=DATE},
+        article_time = #{articleTime,jdbcType=TIMESTAMP},
       </if>
       <if test="articleMark != null">
         article_mark = #{articleMark,jdbcType=VARCHAR},
@@ -144,7 +144,7 @@
       article_content = #{articleContent,jdbcType=VARCHAR},
       article_img = #{articleImg,jdbcType=VARCHAR},
       article_recom = #{articleRecom,jdbcType=VARCHAR},
-      article_time = #{articleTime,jdbcType=DATE},
+      article_time = #{articleTime,jdbcType=TIMESTAMP},
       article_mark = #{articleMark,jdbcType=VARCHAR}
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
