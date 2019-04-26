@@ -4,6 +4,8 @@ import com.lga.myblog.bean.ArticleInfo;
 import com.lga.myblog.bean.CategoryInfo;
 import com.lga.myblog.dao.CategoryInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
     private ArticleInfoService articleInfoService;
 
     @Override
+    @CacheEvict(cacheNames = "liu" ,allEntries = true)
     public boolean saveCategory(CategoryInfo categoryInfo) {
 
         int flag = categoryInfoMapper.insertSelective(categoryInfo);
@@ -27,12 +30,16 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
     }
 
     @Override
+    @Cacheable(cacheNames = "liu" )
     public List<CategoryInfo> getAllCategory() {
 
         return categoryInfoMapper.getAllCategory();
     }
 
     @Override
+    /*
+    @Cacheable(cacheNames = "liu" ,key = "#p0")
+    */
     public CategoryInfo getCategory(Integer categoryId) {
         if (categoryId == null || categoryId == 0) {
             new IllegalArgumentException("修改栏目失败，因为categoryId对象为空或者为0");
@@ -42,6 +49,7 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "liu" ,allEntries = true)
     public Boolean updateCategory(CategoryInfo categoryInfo) {
         if (categoryInfo == null) {
             new IllegalArgumentException("更新栏目失败，因为categoryInfo对象为空");
@@ -51,6 +59,7 @@ public class CategoryInfoServiceImpl implements CategoryInfoService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "liu" ,allEntries = true)
     public boolean deleteCategory(Integer categoryId) {
 
         if (categoryId <= 0) {

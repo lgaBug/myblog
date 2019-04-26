@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/front/css/base.css" rel="stylesheet">
+<link href="/front/css/index.css" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">网站首页</a></li>
+      <#list  (categoryInfoList)! as categoryInfo>
+        <li><a href="list.html">${(categoryInfo.categoryName)!}</a></li>
+      </#list>
+<!--
+      <li><a href="message.html">留言</a></li>
+-->
+    </ul>
+  </nav>
+</header>
+<article>
+  <div class="pics">
+    <ul>
+      <li><img src="/front/picture/42d76eafa6495d9647a4fd245201f56c.jpg"></li>
+      <li><img src="/front/picture/c9668d65657bc41b77f6834984538979.jpg"></li>
+      <li><img src="/front/picture/13ec5c876bf437fd7e9e6b12b565a69c.jpg"></li>
+    </ul>
+  </div>
+  <div class="sleftbox">
+    <div class="newblogs">
+      <h2 class="hometitle">最新文章</h2>
+      <ul>
+
+        <#list (newArticleList) as newArticle >
+          <li>
+            <h3 class="blogtitle"><a href="/jstt/css3/2018-03-25/811.html" target="_blank" >${(newArticle.articleTitle)}</a></h3>
+            <div class="bloginfo"><span class="blogpic"><a href="/jstt/css3/2018-03-25/811.html" title="${(newArticle.articleTitle)}"><img src="${(newArticle.articleImg)}" alt="${(newArticle.articleTitle)}" /></a></span>
+              <p>
+                <#if newArticle.articleContent?length gt 130>
+                 ${(newArticle.articleContent)?substring(0,130)}...
+                <#else>
+                ${(newArticle.articleContent)}...
+                </#if>
+              </p>
+            </div>
+            <div class="autor"><span class="lm f_l"><a href="/jstt/css3/" title="${(newArticle.categoryName)}" target="_blank"  class="classname">${(newArticle.categoryName)}</a></span><span class="dtime f_l">${(newArticle.articleTime)?string("yyyy-MM-dd")}</span><span class="viewnum f_l">浏览（<a href="/">115</a>）</span><span class="f_r"><a href="/front/article/listview?articleId=${(newArticle.articleId)}" class="more">阅读原文>></a></span></div>
+          </li>
+        </#list>
+      </ul>
+    </div>
+  </div>
+  <div class="srightbox">
+    <div class="aboutme">
+      <h2 class="ab_title">关于我</h2>
+      <div class="avatar"><img src="/front/picture/b04.jpg" /></div>
+      <div class="ab_con">
+        <p>网名：laoniu | 老牛</p>
+        <p>职业：Java高级讲师 </p>
+      </div>
+    </div>
+    <div class="search">
+      <form action="" method="post" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+      </form>
+    </div>
+    <div class="paihang">
+      <h2 class="ab_title"><a href="/">站长推荐</a></h2>
+      <ul>
+        <#list (recomArticleList)! as recomArticle>
+          <li>
+            <b>
+              <a href="/download/div/2015-04-10/746.html" target="_blank">${(recomArticle.articleTitle)!}</a>
+            </b>
+<!--
+            <span>${(recomArticle.articleContent)?substring(0,100)} ...</span>
+-->
+          </li>
+        </#list>
+
+      </ul>
+      <div class="ad"><img src="/front/picture/ad300x100.jpg"></div>
+    </div>
+
+
+  </div>
+</article>
+<footer>
+  <p>Design by <a href="http://www.XXX.com">个人博客</a> <a href="/">渝ICP备</a></p>
+</footer>
+</body>
+</html>

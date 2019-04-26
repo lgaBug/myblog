@@ -184,7 +184,7 @@
     <if test="articleRecom != null">
       and t1.article_recom = #{articleRecom}
     </if>
-    order  by article_id asc
+    order  by article_time desc
 
     <if test="start != 1 and length != -1">
       limit #{start},#{length}

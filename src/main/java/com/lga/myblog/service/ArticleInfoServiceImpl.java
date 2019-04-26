@@ -11,9 +11,12 @@ import com.sun.jersey.api.client.WebResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sound.sampled.Line;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -67,6 +70,7 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
 
 
     @Override
+    @CacheEvict(cacheNames = "recomArticle" ,allEntries = true)
     public boolean saveArticle(ArticleInfo articleInfo) {
         if (articleInfo == null) {
             new IllegalArgumentException("添加文章失败，articleInfo对象为空");
@@ -127,11 +131,36 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "recomArticle" ,allEntries = true)
     public boolean updateArticle(ArticleInfo articleInfo) {
         if (articleInfo == null) {
             new IllegalArgumentException("参数articleInfo为空，所以不能进行更新操作");
         }
         int flag = articleInfoMapper.updateByPrimaryKeySelective(articleInfo);
         return flag > 0 ? true : false;
+    }
+
+
+    @Override
+    public List<ArticleInfo> getNewArticleList() {
+        ArticleInfo articleInfo = new ArticleInfo();
+        articleInfo.setArticleMark(Const.MARK_YES);
+        articleInfo.setStart(0);
+        articleInfo.setLength(10);
+        List<ArticleInfo> articleInfos = articleInfoMapper.getArticle(articleInfo);
+        return articleInfos;
+    }
+
+    @Override
+    @Cacheable(cacheNames = "recomArticle")
+    public List<ArticleInfo> getRecomArticleList() {
+        ArticleInfo articleInfo = new ArticleInfo();
+        articleInfo.setArticleMark(Const.MARK_YES);
+        //推荐的文章
+        articleInfo.setArticleRecom(Const.MARK_YES);
+        articleInfo.setStart(0);
+        articleInfo.setLength(10);
+        List<ArticleInfo> articleInfos = articleInfoMapper.getArticle(articleInfo);
+        return articleInfos;
     }
 }

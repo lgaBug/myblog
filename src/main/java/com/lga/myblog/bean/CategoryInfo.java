@@ -1,6 +1,8 @@
 package com.lga.myblog.bean;
 
-public class CategoryInfo {
+import java.io.Serializable;
+
+public class CategoryInfo implements Serializable {
     private Integer categoryId;
 
     private String categoryName;
@@ -10,6 +12,7 @@ public class CategoryInfo {
     private String categoryDesc;
 
     private Integer number;
+
 
     public Integer getNumber() {
         return number;
@@ -49,5 +52,16 @@ public class CategoryInfo {
 
     public void setCategoryDesc(String categoryDesc) {
         this.categoryDesc = categoryDesc == null ? null : categoryDesc.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryInfo{" +
+                "categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", categoryAlias='" + categoryAlias + '\'' +
+                ", categoryDesc='" + categoryDesc + '\'' +
+                ", number=" + number +
+                '}';
     }
 }

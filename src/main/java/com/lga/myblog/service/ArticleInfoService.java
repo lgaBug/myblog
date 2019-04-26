@@ -46,4 +46,8 @@ public interface ArticleInfoService {
     ArticleInfo getArticleById(Integer articleId);
 
     boolean updateArticle(ArticleInfo articleInfo);
+
+    List<ArticleInfo> getNewArticleList();
+
+    List<ArticleInfo> getRecomArticleList();
 }
