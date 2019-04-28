@@ -1,6 +1,7 @@
 package com.lga.myblog.service;
 
 import com.lga.myblog.bean.ArticleInfo;
+import com.lga.myblog.bean.CategoryInfo;
 import com.lga.myblog.bean.UserInfo;
 import com.lga.myblog.dao.ArticleInfoMapper;
 import com.lga.myblog.utils.Const;
@@ -153,14 +154,51 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
 
     @Override
     @Cacheable(cacheNames = "recomArticle")
-    public List<ArticleInfo> getRecomArticleList() {
+    public List<ArticleInfo> getRecomArticleList(Integer categoryId) {
         ArticleInfo articleInfo = new ArticleInfo();
         articleInfo.setArticleMark(Const.MARK_YES);
         //推荐的文章
         articleInfo.setArticleRecom(Const.MARK_YES);
         articleInfo.setStart(0);
         articleInfo.setLength(10);
+        if (categoryId != null && categoryId > 0) {
+            articleInfo.setCategoryId(categoryId);
+        }
         List<ArticleInfo> articleInfos = articleInfoMapper.getArticle(articleInfo);
         return articleInfos;
+    }
+
+    @Override
+    public PageBean<ArticleInfo> getArticlesInCategoryId(CategoryInfo categoryInfo, Integer page) {
+
+        ArticleInfo articleInfo =  new ArticleInfo();
+        articleInfo.setCategoryId(categoryInfo.getCategoryId());
+
+        //获取总记录数
+        Long allRow = articleInfoMapper.getArticleCount(articleInfo);
+        //获取总页数
+        Integer totalPage = (Integer) PageUtils.countTotalPage(allRow.intValue(), Const.PAGE_SIZE);
+        //当前第几页
+        int currentPage = PageUtils.currentPage(page);
+        //起始记录数
+        int start = PageUtils.countStart(Const.PAGE_SIZE, currentPage);
+
+        if (page >= 0) {
+            articleInfo.setStart(start);
+            articleInfo.setLength(Const.PAGE_SIZE);
+        } else {
+            articleInfo.setStart(-1);
+            articleInfo.setLength(-1);
+        }
+
+        List<ArticleInfo> articleInfos = articleInfoMapper.getArticle(articleInfo);
+
+        //设置返回页面的pageBean详细信息
+        PageBean<ArticleInfo> pageBean = new PageBean<>();
+        pageBean.setList(articleInfos);
+        pageBean.setAllRow(allRow.intValue());
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalPage(totalPage);
+        return pageBean;
     }
 }

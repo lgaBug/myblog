@@ -1,8 +1,11 @@
 package com.lga.myblog.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MessageInfo {
+public class MessageInfo implements Serializable {
+
+    private static final long serialVersionUID = 6862248786235088803L;
     private Integer messageId;
 
     private String messageContent;

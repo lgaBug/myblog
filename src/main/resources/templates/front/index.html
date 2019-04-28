@@ -4,21 +4,27 @@
 <meta charset="utf-8">
 <title>个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="/front/css/base.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/admin/css/bootstrap.min.css">
+  <link href="/front/css/base.css" rel="stylesheet">
 <link href="/front/css/index.css" rel="stylesheet">
+  <style type="text/css">
+    a:hover{text-decoration:underline;}
+</style>
+
 </head>
+<style>
+
+</style>
 <body>
 
 <header>
   <nav>
     <ul>
-      <li><a href="index.html">网站首页</a></li>
+      <li><a href=""/front/index"">网站首页</a></li>
       <#list  (categoryInfoList)! as categoryInfo>
-        <li><a href="list.html">${(categoryInfo.categoryName)!}</a></li>
+        <li><a href="/front/category/list?categoryId=${(categoryInfo.categoryId)!}&page=1">${(categoryInfo.categoryName)!}</a></li>
       </#list>
-<!--
-      <li><a href="message.html">留言</a></li>
--->
+      <li><a href="/front/message/list">留言</a></li>
     </ul>
   </nav>
 </header>
@@ -37,8 +43,8 @@
 
         <#list (newArticleList) as newArticle >
           <li>
-            <h3 class="blogtitle"><a href="/jstt/css3/2018-03-25/811.html" target="_blank" >${(newArticle.articleTitle)}</a></h3>
-            <div class="bloginfo"><span class="blogpic"><a href="/jstt/css3/2018-03-25/811.html" title="${(newArticle.articleTitle)}"><img src="${(newArticle.articleImg)}" alt="${(newArticle.articleTitle)}" /></a></span>
+            <h3 class="blogtitle"><a  href="/front/article/listview?articleId=${(newArticle.articleId)!}" target="" >${(newArticle.articleTitle)}</a></h3>
+            <div class="bloginfo"><span class="blogpic"><a href="/jstt/css3/2018-03-25/811.html" title="${(newArticle.articleTitle)}"><img src="${(newArticle.articleImg)}" href="/front/article/listview?articleId=${(newArticle.articleId)!}" alt="${(newArticle.articleTitle)}" /></a></span>
               <p>
                 <#if newArticle.articleContent?length gt 130>
                  ${(newArticle.articleContent)?substring(0,130)}...
@@ -47,7 +53,7 @@
                 </#if>
               </p>
             </div>
-            <div class="autor"><span class="lm f_l"><a href="/jstt/css3/" title="${(newArticle.categoryName)}" target="_blank"  class="classname">${(newArticle.categoryName)}</a></span><span class="dtime f_l">${(newArticle.articleTime)?string("yyyy-MM-dd")}</span><span class="viewnum f_l">浏览（<a href="/">115</a>）</span><span class="f_r"><a href="/front/article/listview?articleId=${(newArticle.articleId)}" class="more">阅读原文>></a></span></div>
+            <div class="autor"><span class="lm f_l"><a href="/front/category/list?categoryId=${(newArticle.categoryId)!}&page=1" title="${(newArticle.categoryName)}" target="_blank"  class="classname">${(newArticle.categoryName)}</a></span><span class="dtime f_l">${(newArticle.articleTime)?string("yyyy-MM-dd HH:mm:ss")}</span><span class="viewnum f_l">浏览（<a href="javascript:void(0)">115</a>）</span><span class="f_r"><a href="/front/article/listview?articleId=${(newArticle.articleId)}" class="more">阅读原文>></a></span></div>
           </li>
         </#list>
       </ul>
@@ -76,11 +82,8 @@
         <#list (recomArticleList)! as recomArticle>
           <li>
             <b>
-              <a href="/download/div/2015-04-10/746.html" target="_blank">${(recomArticle.articleTitle)!}</a>
+              <a href="/front/article/listview?articleId=${(recomArticle.articleId)!}" target="_blank">${(recomArticle.articleTitle)!}</a>
             </b>
-<!--
-            <span>${(recomArticle.articleContent)?substring(0,100)} ...</span>
--->
           </li>
         </#list>
 
@@ -92,7 +95,7 @@
   </div>
 </article>
 <footer>
-  <p>Design by <a href="http://www.XXX.com">个人博客</a> <a href="/">渝ICP备</a></p>
+  <p>Design by <a href="javascript:void(0)">lga个人博客</a></p>
 </footer>
 </body>
 </html>

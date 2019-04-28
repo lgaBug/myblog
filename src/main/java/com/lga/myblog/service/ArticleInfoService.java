@@ -1,6 +1,7 @@
 package com.lga.myblog.service;
 
 import com.lga.myblog.bean.ArticleInfo;
+import com.lga.myblog.bean.CategoryInfo;
 import com.lga.myblog.utils.PageBean;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,5 +50,12 @@ public interface ArticleInfoService {
 
     List<ArticleInfo> getNewArticleList();
 
-    List<ArticleInfo> getRecomArticleList();
+    List<ArticleInfo> getRecomArticleList(Integer categoryId);
+
+    /**
+     * 获取栏目categoryId 下的所有文章
+     * @param categoryInfo
+     * @return
+     */
+    PageBean<ArticleInfo> getArticlesInCategoryId(CategoryInfo categoryInfo,Integer page);
 }

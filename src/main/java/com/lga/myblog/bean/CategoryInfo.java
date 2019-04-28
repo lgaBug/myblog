@@ -3,6 +3,9 @@ package com.lga.myblog.bean;
 import java.io.Serializable;
 
 public class CategoryInfo implements Serializable {
+
+    private static final long serialVersionUID = -6416769911793183852L;
+
     private Integer categoryId;
 
     private String categoryName;

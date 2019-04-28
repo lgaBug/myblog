@@ -2,7 +2,12 @@ package com.lga.myblog.bean;
 
 import com.lga.myblog.utils.BaseBean;
 
-public class UserInfo  extends BaseBean {
+import java.io.Serializable;
+
+public class UserInfo  extends BaseBean implements Serializable {
+
+    private static final long serialVersionUID = 1379057536212755132L;
+
     private Integer userId;
 
     private String userName;

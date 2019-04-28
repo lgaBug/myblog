@@ -12,15 +12,23 @@
     <result column="article_time" jdbcType="TIMESTAMP" property="articleTime" />
     <result column="article_mark" jdbcType="VARCHAR" property="articleMark" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName"></result>
+    <result column="user_name" jdbcType="VARCHAR" property="userName"></result>
+
   </resultMap>
   <sql id="Base_Column_List">
     article_id, category_id, user_id, article_title, article_content, article_img, article_recom, 
     article_time, article_mark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from article_info
+    select
+    ai.article_id, ai.category_id, ai.user_id, ai.article_title, ai.article_content, ai.article_img, ai.article_recom, ai.article_time, ai.article_mark
+    ,
+    ui.user_name ,
+    ci.category_name
+
+    from article_info ai
+    left join user_info ui on ai.user_id = ui.user_id
+    left join category_info ci on ai.category_id = ci.category_id
     where article_id = #{articleId,jdbcType=INTEGER}
   </select>
 
@@ -163,10 +171,12 @@
   <select id="getArticle" parameterType="articleInfo" resultMap="BaseResultMap">
     select
     t1.article_id, t1.category_id, t1.user_id, t1.article_title, t1.article_content, t1.article_img, t1.article_recom, t1.article_time, t1.article_mark,
-    t2.category_name
+    t2.category_name,
+    ui.user_name
     from article_info t1
     left join category_info t2
     on t1.category_id = t2.category_id
+    left join user_info ui on t1.user_id = ui.user_id
     where article_mark = '1'
     <if test="articleTitle != null">
       <bind name="articleTitleParam" value="'%'+_parameter.articleTitle+'%'"/>
@@ -198,6 +208,8 @@
     from article_info t1
     left join category_info t2
     on t1.category_id = t2.category_id
+    left join user_info ui on t1.user_id = ui.user_id
+
     where article_mark = '1'
     <if test="articleTitle != null">
       <bind name="articleTitleParam" value="'%'+_parameter.articleTitle+'%'"/>

@@ -2,9 +2,13 @@ package com.lga.myblog.bean;
 
 import com.lga.myblog.utils.BaseBean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ArticleInfo extends BaseBean {
+public class ArticleInfo extends BaseBean implements Serializable {
+
+    private static final long serialVersionUID = 751101932361701089L;
+
     private Integer articleId;
 
     private Integer categoryId;
@@ -24,6 +28,16 @@ public class ArticleInfo extends BaseBean {
     private String articleMark;
 
     private String categoryName;
+
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getCategoryName() {
         return categoryName;
