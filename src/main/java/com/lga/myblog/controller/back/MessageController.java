@@ -29,7 +29,7 @@ public class MessageController {
     @RequestMapping("/list")
     public String messageListPage(MessageInfo message , Model model) {
 
-        List<MessageInfo> messageInfos = messageService.getMessage(message);
+        List<MessageInfo> messageInfos = messageService.getMessages(message);
         model.addAttribute("messageInfos", messageInfos);
         model.addAttribute("mess", message);
 
@@ -45,7 +45,7 @@ public class MessageController {
         */
         LOG.info(flag ? "更新留言成功,留言记录的id为:{}" : "更新留言失败,留言记录的id为:{}",messageInfo.getMessageId());
 
-        List<MessageInfo> messageInfos = messageService.getMessage(new MessageInfo());
+        List<MessageInfo> messageInfos = messageService.getMessages(new MessageInfo());
         model.addAttribute("messageInfos", messageInfos);
 
         return "back/message/message_list";

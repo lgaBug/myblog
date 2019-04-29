@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/admin/js/jquery-2.1.4.min.js"></script>
+<script src="/layer/layer.js"></script>
+<script type="text/javascript">
+
+    layer.alert('${(info)!}',function (index) {
+        location.href="/front/message/list";
+        layer.close(index);
+    })
+
+</script>
+
+</head>
+
+<body class="user-select" style="margin: 0px;padding: 0px;">
+</body>
+</html>

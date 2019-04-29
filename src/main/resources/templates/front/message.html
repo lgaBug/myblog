@@ -2,12 +2,10 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>帝国cms关键词</title>
-<meta name="keywords" content="帝国cms" />
-<meta name="description" content="帝国cms关键词和tags标签自动同步方法" />
+<title>在线留言</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="static/front/css/base.css" rel="stylesheet">
-<link href="static/front/css/index.css" rel="stylesheet">
+<link href="/front/css/base.css" rel="stylesheet">
+<link href="/front/css/index.css" rel="stylesheet">
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet"
 	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -32,9 +30,11 @@
 
 		<nav>
 			<ul>
-				<li><a href="index.html">网站首页</a></li>
-				<li><a href="list.html">学无止境</a></li>
-				<li><a href="message.html">留言</a></li>
+				<li><a href="/front/index">网站首页</a></li>
+				<#list  (categoryInfoList)! as categoryInfo>
+				<li><a href="/front/category/list?categoryId=${(categoryInfo.categoryId)!}&page=1">${(categoryInfo.categoryName)!}</a></li>
+			</#list>
+			<li><a href="/front/message/list">留言</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -42,17 +42,17 @@
 		<div class=" row container">
 			<h3>在线留言</h3>
 			<hr />
-			<form class="form-horizontal">
+			<form class="form-horizontal" action="/front/message/add" method="post">
 				<div class="form-group">
 				
 					<div class="col-sm-8">
-						<input type="email" class="form-control" id=name placeholder="请输入姓名">
+						<input required class="form-control"  name="messageName" placeholder="请输入姓名">
 					</div>
 				</div>
 				<div class="form-group">
 				
 					<div class="col-sm-8">
-						<textarea rows="" cols="" class="form-control" placeholder="请输入留言内容"></textarea>
+						<textarea rows="" cols="" class="form-control" name="messageContent" minlength="30" required placeholder="请输入留言内容"></textarea>
 					</div>
 				</div>
 
@@ -64,24 +64,22 @@
 			</form>
 		</div>
 		<hr />
+		<div style="color: red" align="center">${(info)!}</div>
 		<div class="form-group">
-		<blockquote>
-  			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-  			<br/>
-  			<small>姓名：张三  留言时间：2019-12-12 12:12:12</small></p>
-		</blockquote>
-		<blockquote>
-  			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-  			<br/>
-  			<small>姓名：张三  留言时间：2019-12-12 12:12:12</small></p>
-		</blockquote>
+			<#list (messageInfos)! as message>
+				<blockquote>
+					<p>${(message.messageContent)!}
+						<br/>
+						<small>姓名：${(message.messageName)!}  留言时间：${(message.messageTime)?string("yyyy-MM-dd HH:mm:ss")}</small></p>
+				</blockquote>
+			</#list>
 		</div>
 	</article>
 	<footer>
 		<p>
-			Design by <a href="http://www.XXX.com">个人博客</a> <a href="/">渝ICP备</a>
+		<p>Design by <a href="javascript:void(0)">lga个人博客</a></p>
 		</p>
 	</footer>
-	<script src="static/js/61a9ee23bfbe484da195456aea8b6f8b.js"></script>
+	<script src="/js/61a9ee23bfbe484da195456aea8b6f8b.js"></script>
 </body>
 </html>

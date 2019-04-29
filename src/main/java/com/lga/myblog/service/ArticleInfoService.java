@@ -58,4 +58,10 @@ public interface ArticleInfoService {
      * @return
      */
     PageBean<ArticleInfo> getArticlesInCategoryId(CategoryInfo categoryInfo,Integer page);
+
+    /**
+     * 获取文章的数量
+     * @return
+     */
+    Long getAllArticleCount();
 }

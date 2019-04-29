@@ -20,7 +20,7 @@
 <header>
   <nav>
     <ul>
-      <li><a href=""/front/index"">网站首页</a></li>
+      <li><a href="/front/index">网站首页</a></li>
       <#list  (categoryInfoList)! as categoryInfo>
         <li><a href="/front/category/list?categoryId=${(categoryInfo.categoryId)!}&page=1">${(categoryInfo.categoryName)!}</a></li>
       </#list>
@@ -49,11 +49,11 @@
                 <#if newArticle.articleContent?length gt 130>
                  ${(newArticle.articleContent)?substring(0,130)}...
                 <#else>
-                ${(newArticle.articleContent)}...
+                ${(newArticle.articleContent)!}...
                 </#if>
               </p>
             </div>
-            <div class="autor"><span class="lm f_l"><a href="/front/category/list?categoryId=${(newArticle.categoryId)!}&page=1" title="${(newArticle.categoryName)}" target="_blank"  class="classname">${(newArticle.categoryName)}</a></span><span class="dtime f_l">${(newArticle.articleTime)?string("yyyy-MM-dd HH:mm:ss")}</span><span class="viewnum f_l">浏览（<a href="javascript:void(0)">115</a>）</span><span class="f_r"><a href="/front/article/listview?articleId=${(newArticle.articleId)}" class="more">阅读原文>></a></span></div>
+            <div class="autor"><span class="lm f_l"><a href="/front/category/list?categoryId=${(newArticle.categoryId)!}&page=1" title="${(newArticle.categoryName)!}" target="_blank"  class="classname">${(newArticle.categoryName)!}</a></span><span class="dtime f_l">${(newArticle.articleTime)?string("yyyy-MM-dd HH:mm:ss")}</span><span class="viewnum f_l">浏览（<a href="javascript:void(0)">115</a>）</span><span class="f_r"><a href="/front/article/listview?articleId=${(newArticle.articleId)}" class="more">阅读原文>></a></span></div>
           </li>
         </#list>
       </ul>
@@ -64,16 +64,14 @@
       <h2 class="ab_title">关于我</h2>
       <div class="avatar"><img src="/front/picture/b04.jpg" /></div>
       <div class="ab_con">
-        <p>网名：laoniu | 老牛</p>
-        <p>职业：Java高级讲师 </p>
+        <p>姓名：lga</p>
+        <p>职业：java开发工程师 </p>
       </div>
     </div>
     <div class="search">
-      <form action="" method="post" name="searchform" id="searchform">
-        <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
-        <input name="show" value="title" type="hidden">
-        <input name="tempid" value="1" type="hidden">
-        <input name="tbname" value="news" type="hidden">
+      <form action="/front/article/serarch" method="post" name="searchform" id="searchform">
+        <input name="keyBoard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
       </form>
     </div>
     <div class="paihang">

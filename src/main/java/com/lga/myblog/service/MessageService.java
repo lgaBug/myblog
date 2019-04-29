@@ -7,9 +7,13 @@ import java.util.List;
 
 public interface MessageService {
 
-    List<MessageInfo> getMessage(MessageInfo message);
+    List<MessageInfo> getMessages(MessageInfo message);
 
     boolean deleteMessageById(Integer messageId);
 
     Boolean updateMessage(MessageInfo messageInfo);
+
+    boolean saveMessage(MessageInfo messageInfo);
+
+    Long getAllMessageCount();
 }

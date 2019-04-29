@@ -18,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文章管理控制器
@@ -94,12 +96,14 @@ public class ArticleController {
     @RequestMapping("/uploadfile")
     @ResponseBody
     public void uploadFile(@RequestParam MultipartFile upload , HttpServletRequest request, HttpServletResponse response) {
+        Map<Object, Object> map = new HashMap<>();
         try {
             String url = articleInfoService.doPutFile(upload);
             PrintWriter out = response.getWriter();
-            String callBack = request.getParameter("CKEditorFuncNum");
-            out.println("<script>window.parent.CKEDITOR.tools.callFunction(" + callBack + ",'"+url+"')</script>");
 
+            response.setContentType("text/html;charset=UTF-8");
+            String callback = request.getParameter("CKEditorFuncNum");
+            out.println("<script>window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + url + "')</script>");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,6 +134,13 @@ public class ArticleController {
 
         boolean flag = articleInfoService.updateArticle(articleInfo);
         model.addAttribute("info", flag ? "更新文章成功" : "更新文章失败");
+
+        ArticleInfo articleInfo1 = articleInfoService.getArticleById(articleInfo.getArticleId());
+        model.addAttribute("articleInfo", articleInfo1);
+
+        //查询出所有的栏目信息
+        List<CategoryInfo> allCategory = categoryInfoService.getAllCategory();
+        model.addAttribute("allCategory", allCategory);
 
 
 

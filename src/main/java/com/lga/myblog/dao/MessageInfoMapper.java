@@ -20,4 +20,6 @@ public interface MessageInfoMapper {
     int updateByPrimaryKey(MessageInfo record);
 
     List<MessageInfo> getMessage(MessageInfo message);
+
+    Long getAllMessageCount();
 }

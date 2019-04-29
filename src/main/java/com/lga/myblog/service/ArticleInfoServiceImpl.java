@@ -1,9 +1,12 @@
 package com.lga.myblog.service;
 
 import com.lga.myblog.bean.ArticleInfo;
+import com.lga.myblog.bean.ArticleInfoBean;
 import com.lga.myblog.bean.CategoryInfo;
 import com.lga.myblog.bean.UserInfo;
+import com.lga.myblog.dao.ArticleInfoBeanRepository;
 import com.lga.myblog.dao.ArticleInfoMapper;
+import com.lga.myblog.dao.CategoryInfoMapper;
 import com.lga.myblog.utils.Const;
 import com.lga.myblog.utils.PageBean;
 import com.lga.myblog.utils.PageUtils;
@@ -29,6 +32,12 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
 
     @Autowired
     private ArticleInfoMapper articleInfoMapper;
+
+    @Autowired
+    private CategoryInfoMapper categoryInfoMapper;
+
+    @Autowired
+    private ArticleInfoBeanRepository er;
 
     @Override
     public int deleteArticleByCategoryId(Integer categoryId) {
@@ -69,14 +78,31 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
         return pageBean;
     }
 
-
     @Override
-    @CacheEvict(cacheNames = "recomArticle" ,allEntries = true)
+    @CacheEvict(cacheNames = "recomArticle", allEntries = true)
     public boolean saveArticle(ArticleInfo articleInfo) {
+
         if (articleInfo == null) {
             new IllegalArgumentException("添加文章失败，articleInfo对象为空");
         }
         int flag = articleInfoMapper.insertSelective(articleInfo);
+
+        //获取插入后的articleInfo
+        articleInfo = articleInfoMapper.selectByPrimaryKey(articleInfo.getArticleId());
+
+        try {
+            //保存到es中
+            ArticleInfoBean articleInfoBean = new ArticleInfoBean();
+            articleInfoBean.setArticleId(articleInfo.getArticleId());
+            articleInfoBean.setArticleContent(articleInfo.getArticleContent());
+            articleInfoBean.setArticleTitle(articleInfo.getArticleTitle());
+            articleInfoBean.setArticleImg(articleInfo.getArticleImg());
+            articleInfoBean.setArticleTime(articleInfo.getArticleTime());
+            articleInfoBean.setCategoryName(articleInfo.getCategoryName());
+            er.save(articleInfoBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return flag > 0 ? true : false;
     }
 
@@ -120,6 +146,11 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
         articleInfo.setArticleId(articleId);
         articleInfo.setArticleMark("-1");
         int flag = articleInfoMapper.updateByPrimaryKeySelective(articleInfo);
+        //删除es
+        ArticleInfoBean articleInfoBean = new ArticleInfoBean();
+        articleInfoBean.setArticleId(articleInfo.getArticleId());
+        er.delete(articleInfoBean);
+
         return flag > 0 ? true : false;
     }
 
@@ -138,6 +169,15 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
             new IllegalArgumentException("参数articleInfo为空，所以不能进行更新操作");
         }
         int flag = articleInfoMapper.updateByPrimaryKeySelective(articleInfo);
+        //更新保存到es中
+        ArticleInfoBean articleInfoBean = new ArticleInfoBean();
+        articleInfoBean.setArticleId(articleInfo.getArticleId());
+        articleInfoBean.setArticleContent(articleInfo.getArticleContent());
+        articleInfoBean.setArticleTitle(articleInfo.getArticleTitle());
+        articleInfoBean.setArticleImg(articleInfo.getArticleImg());
+        articleInfoBean.setCategoryName(articleInfo.getCategoryName());
+        er.save(articleInfoBean);
+
         return flag > 0 ? true : false;
     }
 
@@ -200,5 +240,10 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
         pageBean.setCurrentPage(currentPage);
         pageBean.setTotalPage(totalPage);
         return pageBean;
+    }
+
+    @Override
+    public Long getAllArticleCount() {
+        return articleInfoMapper.getArticleCount(new ArticleInfo());
     }
 }

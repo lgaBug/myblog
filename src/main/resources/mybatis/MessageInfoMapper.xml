@@ -123,8 +123,17 @@
     <if test="messageMark != null">
       and  message_mark =#{messageMark}
     </if>
+    order by message_time desc
+
+  </select>
 
 
+  <!--获取所有的留言数量-->
+  <select id="getAllMessageCount" resultType="long">
+    select
+    count(*)
+    from message_info
+    where 1=1
   </select>
 
 

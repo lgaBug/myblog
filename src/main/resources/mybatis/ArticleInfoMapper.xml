@@ -53,7 +53,8 @@
       #{articleRecom,jdbcType=VARCHAR}, #{articleTime,jdbcType=TIMESTAMP}, #{articleMark,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.lga.myblog.bean.ArticleInfo">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="articleId" parameterType="com.lga.myblog.bean.ArticleInfo">
+
     insert into article_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="articleId != null">

@@ -1,6 +1,8 @@
 package com.lga.myblog.controller.back;
 
 import com.lga.myblog.bean.UserInfo;
+import com.lga.myblog.service.ArticleInfoService;
+import com.lga.myblog.service.MessageService;
 import com.lga.myblog.service.UserInfoService;
 import freemarker.template.utility.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +29,12 @@ public class BackIndexController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private ArticleInfoService articleInfoService;
+
+    @Autowired
+    private MessageService messageService;
 
     @GetMapping("/login")
     public String login(HttpSession session) {
@@ -77,6 +85,14 @@ public class BackIndexController {
         //获取用户数量
         int count = userInfoService.getCount();
         model.addAttribute("userCount", count);
+
+        //获取文章数量
+        Long articleCount = articleInfoService.getAllArticleCount();
+        model.addAttribute("articleCount", articleCount);
+        //获取留言数量
+        Long messageCount= messageService.getAllMessageCount();
+        model.addAttribute("messageCount", messageCount);
+
         return "back/main";
     }
 

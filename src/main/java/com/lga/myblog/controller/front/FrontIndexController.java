@@ -1,13 +1,15 @@
 package com.lga.myblog.controller.front;
 
 import com.lga.myblog.bean.ArticleInfo;
+import com.lga.myblog.bean.ArticleInfoBean;
 import com.lga.myblog.bean.CategoryInfo;
+import com.lga.myblog.bean.MessageInfo;
+import com.lga.myblog.dao.ArticleInfoBeanRepository;
 import com.lga.myblog.service.ArticleInfoService;
 import com.lga.myblog.service.CategoryInfoService;
-import com.lga.myblog.utils.Const;
+import com.lga.myblog.service.MessageService;
 import com.lga.myblog.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,13 @@ public class FrontIndexController {
     @Autowired
     private ArticleInfoService articleInfoService;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private ArticleInfoBeanRepository er;
+
+
     /**
      * 首页展示信息
      * @param model
@@ -44,7 +53,12 @@ public class FrontIndexController {
         return "/front/index";
     }
 
-
+    /**
+     * 展现文章的详情信息
+     * @param articleInfo
+     * @param model
+     * @return
+     */
     @RequestMapping("/article/listview")
     public String listView(ArticleInfo articleInfo, Model model) {
 
@@ -61,13 +75,33 @@ public class FrontIndexController {
         return "/front/listview";
     }
 
+    @RequestMapping("/article/serarch")
+    public String searchArticle(String keyBoard, Model model) {
+
+
+        //获取搜索到的文章
+        List<ArticleInfoBean> articleInfoBeans = er.findDistinctArticleInfoBeanByArticleContentContainingOrArticleTitleContaining(keyBoard, keyBoard);
+        model.addAttribute("newArticleList", articleInfoBeans);
+
+        init(model);
+        return "/front/index";
+    }
+
+    /**
+     * 获取栏目信息
+     * @param categoryInfo
+     * @param model
+     * @param page
+     * @return
+     */
     @RequestMapping("/category/list")
     public String categoryList(CategoryInfo categoryInfo, Model model,Integer page) {
 
         CategoryInfo category = categoryInfoService.getCategory(categoryInfo.getCategoryId());
+        model.addAttribute("category", category);
+
         //获取本栏目的所有文章
         PageBean<ArticleInfo> pageBean =  articleInfoService.getArticlesInCategoryId(categoryInfo, page);
-        model.addAttribute("category", category);
         model.addAttribute("pageBean", pageBean);
 
         //获取本栏推荐
@@ -83,6 +117,43 @@ public class FrontIndexController {
         return "/front/list";
     }
 
+    /**
+     * 获取留言信息
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("/message/list")
+    public String messageList(Model model) {
+
+        //获取所有审核通过的留言（mark=="1"）
+        MessageInfo messageInfo = new MessageInfo();
+        messageInfo.setMessageMark("1");
+        List<MessageInfo> messageInfos = messageService.getMessages(messageInfo);
+        model.addAttribute("messageInfos", messageInfos);
+
+        //初始化所有栏目信息
+        List<CategoryInfo> categoryInfoList = categoryInfoService.getAllCategory();
+        model.addAttribute("categoryInfoList", categoryInfoList);
+        return "/front/message";
+    }
+
+    /**
+     * 保存留言
+     * @param messageInfo
+     * @param model
+     * @return
+     */
+    @RequestMapping("/message/add")
+    public String saveMessage(MessageInfo messageInfo,Model model) {
+
+        boolean flag = messageService.saveMessage(messageInfo);
+        model.addAttribute("info", flag ? "添加留言成功，请等待审核" : "添加留言失败");
+        return "/front/message_info";
+    }
+
+
+
 
 
     /**
@@ -97,5 +168,6 @@ public class FrontIndexController {
         List<CategoryInfo> categoryInfoList = categoryInfoService.getAllCategory();
         model.addAttribute("categoryInfoList", categoryInfoList);
     }
+
 
 }
