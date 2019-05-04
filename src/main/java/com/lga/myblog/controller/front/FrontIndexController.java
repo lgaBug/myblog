@@ -45,13 +45,28 @@ public class FrontIndexController {
     public String index(Model model) {
 
 
-        //查询最新的三篇文章
+        //查询最新的10篇文章
         List<ArticleInfo> newArticleList = articleInfoService.getNewArticleList();
         model.addAttribute("newArticleList", newArticleList);
+        //初始化栏目信息和推荐文章
         init(model);
 
         return "/front/index";
     }
+
+    /**
+     * 初始化推荐文章和栏目信息
+     * @param model
+     */
+    private void init(Model model) {
+        //查询推荐的文章
+        List<ArticleInfo> recomArticleList = articleInfoService.getRecomArticleList(null);
+        model.addAttribute("recomArticleList", recomArticleList);
+        //初始化所有栏目信息
+        List<CategoryInfo> categoryInfoList = categoryInfoService.getAllCategory();
+        model.addAttribute("categoryInfoList", categoryInfoList);
+    }
+
 
     /**
      * 展现文章的详情信息
@@ -156,18 +171,7 @@ public class FrontIndexController {
 
 
 
-    /**
-     * 初始化推荐文章和栏目信息
-     * @param model
-     */
-    private void init(Model model) {
-        //查询推荐的文章
-        List<ArticleInfo> recomArticleList = articleInfoService.getRecomArticleList(null);
-        model.addAttribute("recomArticleList", recomArticleList);
-        //初始化所有栏目信息
-        List<CategoryInfo> categoryInfoList = categoryInfoService.getAllCategory();
-        model.addAttribute("categoryInfoList", categoryInfoList);
-    }
+
 
 
 }
