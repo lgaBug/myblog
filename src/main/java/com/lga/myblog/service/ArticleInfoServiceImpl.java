@@ -168,15 +168,23 @@ public class ArticleInfoServiceImpl implements ArticleInfoService {
         if (articleInfo == null) {
             new IllegalArgumentException("参数articleInfo为空，所以不能进行更新操作");
         }
-        int flag = articleInfoMapper.updateByPrimaryKeySelective(articleInfo);
-        //更新保存到es中
-        ArticleInfoBean articleInfoBean = new ArticleInfoBean();
-        articleInfoBean.setArticleId(articleInfo.getArticleId());
-        articleInfoBean.setArticleContent(articleInfo.getArticleContent());
-        articleInfoBean.setArticleTitle(articleInfo.getArticleTitle());
-        articleInfoBean.setArticleImg(articleInfo.getArticleImg());
-        articleInfoBean.setCategoryName(articleInfo.getCategoryName());
-        er.save(articleInfoBean);
+
+        int flag = 0;
+        try {
+            articleInfo.setArticleTime(new Date());
+            flag = articleInfoMapper.updateByPrimaryKeySelective(articleInfo);
+            //更新保存到es中
+            ArticleInfoBean articleInfoBean = new ArticleInfoBean();
+            articleInfoBean.setArticleId(articleInfo.getArticleId());
+            articleInfoBean.setArticleContent(articleInfo.getArticleContent());
+            articleInfoBean.setArticleTitle(articleInfo.getArticleTitle());
+            articleInfoBean.setArticleImg(articleInfo.getArticleImg());
+            articleInfoBean.setCategoryName(articleInfo.getCategoryName());
+            articleInfoBean.setArticleTime(new Date());
+            er.save(articleInfoBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return flag > 0 ? true : false;
     }

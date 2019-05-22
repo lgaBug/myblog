@@ -37,7 +37,7 @@ public class MyblogApplicationTests {
     public void test2() {
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setMessageId(4);
-        System.out.println("messageInfoMapper.getMessage(messageInfo) = " + messageInfoMapper.getMessage(messageInfo));
+        System.out.println("messageInfoMapper.getMessages(messageInfo) = " + messageInfoMapper.getMessage(messageInfo));
     }
 
 
